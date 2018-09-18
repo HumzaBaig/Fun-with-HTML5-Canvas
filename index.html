@@ -11,24 +11,37 @@
 const canvas = document.querySelector('#draw');
 const ctx = canvas.getContext('2d');
 
-ctx.width = window.innerWidth;
-ctx.height = window.innerHeight;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 ctx.strokeStyle = '#BADA55';
 ctx.lineJoin = 'round';
 ctx.lineCap = 'round';
+ctx.lineWidth = 100;
 
 let isDrawing = false;
 let lastX = 0;
 let lastY = 0;
 
 function draw(e) {
-  console.log(e);
+  if(!isDrawing) return;
+
+  // start
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  // end
+  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.stroke(); //actually puts the line on the canvas
+
+  [lastX, lastY] = [e.offsetX, e.offsetY];
 }
 
+canvas.addEventListener('mousedown', (e) => {
+  isDrawing = true;
+  [lastX, lastY] = [e.offsetX, e.offsetY];
+});
 canvas.addEventListener('mousemove', draw);
-canvas.addEventListener('mousedown', () => isDrawing = true));
-canvas.addEventListener('mouseup', () => isDrawing = false));
-canvas.addEventListener('mouseout', () => isDrawing = false));
+canvas.addEventListener('mouseup', () => isDrawing = false);
+canvas.addEventListener('mouseout', () => isDrawing = false);
 </script>
 
 <style>
